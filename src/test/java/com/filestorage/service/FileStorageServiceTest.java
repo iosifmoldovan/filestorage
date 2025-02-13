@@ -64,23 +64,17 @@ public class FileStorageServiceTest {
      */
     @Test
     public void testSaveFile_Success() throws IOException {
-        // Mock MultipartFile behaviors
-
+        // GIVEN
         when(multipartFile.getOriginalFilename()).thenReturn(TEST_FILE_NAME);
-
-        // Mock resolved file path
         Path mockFilePath = Paths.get(STORAGE_DIR, TEST_FILE_NAME);
         when(fileStorageUtil.resolveFilePath(TEST_FILE_NAME)).thenReturn(mockFilePath);
-
         doNothing().when(fileStorageUtil).validateFileName(TEST_FILE_NAME);
-
-        // Ensure parent directory exists before file creation
         Files.createDirectories(mockFilePath.getParent());
 
-        // Call method under test
+        // WHEN
         String result = fileStorageService.saveFile(multipartFile);
 
-        // Assertions
+        // THEN
         assertNotNull(result);
 
         String expectedResult = STORAGE_DIR + "/"
