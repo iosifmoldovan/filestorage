@@ -32,3 +32,12 @@ This is a REST-based file storage service that stores files on disk and provides
 2. mvn clean install
 
 3. mvn spring-boot:run
+
+
+## Postman Collection
+A Postman collection is available for easy testing of the API.
+
+**Import the collection into Postman**:
+1. Download the collection: [File-Storage-API.postman_collection.json](postman/File-Storage-API.postman_collection.json)
+2. Open Postman → Click "Import" → Select the downloaded file.
+3. Use the predefined requests to test the API.
