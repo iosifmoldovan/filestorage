@@ -83,7 +83,8 @@ public class FileStorageServiceTest {
         // Assertions
         assertNotNull(result);
 
-        String expectedResult = STORAGE_DIR + "/" + Paths.get(STORAGE_DIR).relativize(mockFilePath).toString().replace("\\", "/");
+        String expectedResult = STORAGE_DIR + "/"
+                + Paths.get(STORAGE_DIR).relativize(mockFilePath).toString().replace("\\", "/");
         assertEquals(expectedResult, result);
     }
 
@@ -150,14 +151,16 @@ public class FileStorageServiceTest {
         Path mockFilePath = Paths.get(STORAGE_DIR, TEST_FILE_NAME);
         when(fileStorageUtil.resolveFilePath(TEST_FILE_NAME)).thenReturn(mockFilePath);
         doNothing().when(fileStorageUtil).validateFileName(TEST_FILE_NAME);
-        Files.deleteIfExists(mockFilePath);
-        Files.createFile(mockFilePath);
+        if (!Files.exists(mockFilePath)) {
+            Files.createFile(mockFilePath);
+        }
 
         // WHEN
         String result = fileStorageService.saveFile(multipartFile);
 
         // THEN
-        String expectedResult = STORAGE_DIR + "/" + Paths.get(STORAGE_DIR).relativize(mockFilePath).toString().replace("\\", "/");
+        String expectedResult = STORAGE_DIR + "/"
+                + Paths.get(STORAGE_DIR).relativize(mockFilePath).toString().replace("\\", "/");
         assertNotNull(result);
         assertEquals(expectedResult, result);
     }
@@ -355,8 +358,9 @@ public class FileStorageServiceTest {
         // GIVEN
         String fileName = "testFile.txt";
         Path filePath = Paths.get(STORAGE_DIR, fileName);
-        Files.deleteIfExists(filePath);
-        Files.createFile(filePath);
+        if (!Files.exists(filePath)) {
+            Files.createFile(filePath);
+        }
         when(fileStorageUtil.resolveFilePath(fileName)).thenReturn(filePath);
         FileStorageService fileStorageServiceSpy = spy(fileStorageService);
         doThrow(new RuntimeException("Mocked RuntimeException")).when(fileStorageServiceSpy).deleteFile(fileName);
